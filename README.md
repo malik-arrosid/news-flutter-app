@@ -29,14 +29,35 @@ Ensure you have Flutter installed on your machine. For installation instructions
     ```bash
     cd news-flutter-app
     ```
-
+    
 3. Install dependencies:
 
     ```bash
     flutter pub get
     ```
+    
+4. **Set up News API Key**
+    - Get an API Key from [News API](https://newsapi.org/).
+    - Add the API Key in `lib/client.dart`:
+        ```
+        class Client {
+          static Future<List<Article>> fetchArticle() async {
+            const url =
+                "https://newsapi.org/v2/everything?q=Indonesia&sources?country=id&apiKey=YOUR_API_KEY";
+            final response = await http.get(Uri.parse(url));
+        
+            if (response.statusCode == 200) {
+              Map<String, dynamic> responseBody = jsonDecode(response.body);
+              ResponseArticles responseArticles = ResponseArticles.fromJson(responseBody);
+              return responseArticles.articles;
+            } else {
+              throw Exception("Failed to Loading Article");
+            }
+          }
+        }
+        ```
 
-4. Run the app:
+5. Run the app:
 
     ```bash
     flutter run
